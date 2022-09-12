@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import { Media } from "reactstrap";
-import {
-  Card,
-  CardImg,
-  CardImgOverlay,
-  CardText,
-  CardBody,
-  CardTitle,
-} from "reactstrap";
+import { Card, CardImg, CardImgOverlay, CardTitle } from "reactstrap";
+import Dishdetail from "./DishdetailComponent";
 
 const Menu = ({ dishes }) => {
   const [selectedDish, setSelectedDish] = useState(null);
@@ -16,22 +9,13 @@ const Menu = ({ dishes }) => {
     setSelectedDish(dish);
   };
 
-  const renderDish = (dish) => {
-    if (dish != null)
-      return (
-        <Card>
-          <CardImg top src={dish.image} alt={dish.name} />
-          <CardBody>
-            <CardTitle>{dish.name}</CardTitle>
-            <CardText>{dish.description}</CardText>
-          </CardBody>
-        </Card>
-      );
-  };
-
   const menu = dishes.map((dish) => {
     return (
-      <div key={dish.id} className="col-12 col-md-5 m-1">
+      <div
+        key={dish.id}
+        className="col-12 col-md-5 m-1"
+        style={{ color: "black" }}
+      >
         <Card onClick={() => onDishSelect(dish)}>
           <CardImg width="100%" src={dish.image} alt={dish.name} />
           <CardImgOverlay>
@@ -45,11 +29,8 @@ const Menu = ({ dishes }) => {
   return (
     <div className="container">
       <div className="row">{menu}</div>
-      <div className="row">
-        <div className="col-12 col-md-5 m-1">
-          {selectedDish && renderDish(selectedDish)}
-        </div>
-      </div>
+
+      {selectedDish && <Dishdetail dish={selectedDish} />}
     </div>
   );
 };
