@@ -1,6 +1,6 @@
 // import logo from "./logo.svg";
 import { useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { DISHES } from "../shared/dishes";
 import { PROMOTIONS } from "../shared/promotions";
 import { COMMENTS } from "../shared/comments";
@@ -10,12 +10,27 @@ import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
 import Contact from "./ContactComponent";
+import Dishdetail from "./DishdetailComponent";
 
 function Main() {
   const [dishes, setDishes] = useState(DISHES);
   const [promotions, setPromotions] = useState(PROMOTIONS);
   const [comments, setComments] = useState(COMMENTS);
   const [leaders, setLeaders] = useState(LEADERS);
+
+  const DishWithId = () => {
+    const params = useParams();
+    return (
+      <Dishdetail
+        dish={
+          dishes.filter((dish) => dish.id === parseInt(params.dishId, 10))[0]
+        }
+        comments={comments.filter(
+          (comment) => comment.dishId === parseInt(params.dishId, 10)
+        )}
+      />
+    );
+  };
 
   return (
     <div>
@@ -34,8 +49,10 @@ function Main() {
           }
         />
         <Route exact path="/menu" element={<Menu dishes={dishes} />} />
+        <Route path="/menu/:dishId" element={<DishWithId />} />
         <Route exact path="/contactus" element={<Contact />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
+        {/* <Route path='*' element={<NotFound />} /> */}
       </Routes>
       <Footer />
     </div>

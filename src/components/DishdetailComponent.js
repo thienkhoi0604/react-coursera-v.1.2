@@ -1,4 +1,13 @@
-import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
+import {
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardTitle,
+  Breadcrumb,
+  BreadcrumbItem,
+} from "reactstrap";
+import { Link } from "react-router-dom";
 
 const CommentDishdetail = ({ comment }) => {
   return (
@@ -22,10 +31,22 @@ const CommentDishdetail = ({ comment }) => {
   );
 };
 
-const Dishdetail = ({ dish }) => {
+const Dishdetail = ({ dish, comments }) => {
   return dish ? (
     <div className="container">
       <div className="row" style={{ textAlign: "left" }}>
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/menu">Menu</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>{dish.name}</BreadcrumbItem>
+        </Breadcrumb>
+        <div className="col-12">
+          <h3>{dish.name}</h3>
+          <hr />
+        </div>
+      </div>
+      <div className="row">
         <div className="col-12 col-md-5 m-1">
           <Card>
             <CardImg top src={dish.image} alt={dish.name} />
@@ -37,7 +58,7 @@ const Dishdetail = ({ dish }) => {
         </div>
         <div className="col-12 col-md-5 m-1">
           <h4>Comments</h4>
-          {dish.comments.map((comment) => {
+          {comments.map((comment) => {
             return (
               <div key={comment.id}>
                 <CommentDishdetail comment={comment} />
