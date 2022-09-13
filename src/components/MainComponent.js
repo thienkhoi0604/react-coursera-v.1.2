@@ -11,6 +11,7 @@ import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
 import Contact from "./ContactComponent";
 import Dishdetail from "./DishdetailComponent";
+import About from "./AboutComponent";
 
 function Main() {
   const [dishes, setDishes] = useState(DISHES);
@@ -51,6 +52,7 @@ function Main() {
         <Route exact path="/menu" element={<Menu dishes={dishes} />} />
         <Route path="/menu/:dishId" element={<DishWithId />} />
         <Route exact path="/contactus" element={<Contact />} />
+        <Route exact path="/aboutus" element={<About leaders={leaders} />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
         {/* <Route path='*' element={<NotFound />} /> */}
       </Routes>
