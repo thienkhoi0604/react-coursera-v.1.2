@@ -1,7 +1,150 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
-import { Breadcrumb, BreadcrumbItem } from "reactstrap";
+import React, { useState } from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Form,
+  Button,
+  FormGroup,
+  Label,
+  Col,
+  Input,
+} from "reactstrap";
 import { Link } from "react-router-dom";
+
+const FormContact = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [telnum, setTelnum] = useState("");
+  const [email, setEmail] = useState("");
+  const [agree, setAgree] = useState(false);
+  const [contactType, setContactType] = useState("Tel.");
+  const [message, setMessage] = useState("");
+
+  return (
+    <React.Fragment>
+      <div className="col-12">
+        <h3>Send us your feedback</h3>
+      </div>
+      <div className="col-12 col-md-9">
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <FormGroup row>
+            <Label htmlFor="firstname" md={2}>
+              First Name
+            </Label>
+            <Col md={10}>
+              <Input
+                type="text"
+                id="firstname"
+                name="firstname"
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label htmlFor="lastname" md={2}>
+              Last Name
+            </Label>
+            <Col md={10}>
+              <Input
+                type="text"
+                id="lastname"
+                name="lastname"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label htmlFor="telnum" md={2}>
+              Contact Tel.
+            </Label>
+            <Col md={10}>
+              <Input
+                type="tel"
+                id="telnum"
+                name="telnum"
+                placeholder="Tel. number"
+                value={telnum}
+                onChange={(e) => setTelnum(e.target.value)}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label htmlFor="email" md={2}>
+              Email
+            </Label>
+            <Col md={10}>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col md={{ size: 6, offset: 2 }}>
+              <FormGroup check style={{ textAlign: "left" }}>
+                <Label check>
+                  <Input
+                    type="checkbox"
+                    name="agree"
+                    value={agree}
+                    onChange={(e) => setAgree(e.target.checked)}
+                  />
+                  <strong>May we contact you?</strong>
+                </Label>
+              </FormGroup>
+            </Col>
+            <Col md={{ size: 3, offset: 1 }} style={{ textAlign: "right" }}>
+              <Input
+                type="select"
+                name="contactType"
+                value={contactType}
+                onChange={(e) => setContactType(e.target.value)}
+              >
+                <option>Tel.</option>
+                <option>Email</option>
+              </Input>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label htmlFor="message" md={2}>
+              Your Feedback
+            </Label>
+            <Col md={10}>
+              <Input
+                type="textarea"
+                id="message"
+                name="message"
+                rows="12"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              ></Input>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col md={{ size: 10, offset: 2 }} style={{ textAlign: "left" }}>
+              <Button type="submit" color="primary">
+                Send Feedback
+              </Button>
+            </Col>
+          </FormGroup>
+        </Form>
+      </div>
+    </React.Fragment>
+  );
+};
 
 const Contact = () => {
   return (
@@ -63,6 +206,9 @@ const Contact = () => {
             </a>
           </div>
         </div>
+      </div>
+      <div className="row row-content">
+        <FormContact />
       </div>
     </div>
   );

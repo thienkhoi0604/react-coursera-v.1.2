@@ -10,24 +10,24 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
-const About = ({ leaders }) => {
-  const RenderLeader = ({ leader }) => {
-    return (
-      <Media className="my-4" style={{ textAlign: "left" }}>
-        <img className="mr-3" src={leader.image} alt={leader.name}></img>
-        <Media body left>
-          <h3 className="mt-0 mb-1">{leader.name}</h3>
-          {leader.designation && (
-            <CardSubtitle className="mt-1 mb-3">
-              {leader.designation}
-            </CardSubtitle>
-          )}
-          {leader.description}
-        </Media>
+const RenderLeader = ({ leader }) => {
+  return (
+    <Media className="my-4" style={{ textAlign: "left" }}>
+      <img className="mr-3" src={leader.image} alt={leader.name}></img>
+      <Media body left>
+        <h3 className="mt-0 mb-1">{leader.name}</h3>
+        {leader.designation && (
+          <CardSubtitle className="mt-1 mb-3">
+            {leader.designation}
+          </CardSubtitle>
+        )}
+        {leader.description}
       </Media>
-    );
-  };
+    </Media>
+  );
+};
 
+const About = ({ leaders }) => {
   return (
     <div className="container">
       <div className="row">
