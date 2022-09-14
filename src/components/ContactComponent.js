@@ -9,6 +9,7 @@ import {
   Label,
   Col,
   Input,
+  FormFeedback,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -20,6 +21,62 @@ const FormContact = () => {
   const [agree, setAgree] = useState(false);
   const [contactType, setContactType] = useState("Tel.");
   const [message, setMessage] = useState("");
+  const [touched, setTouched] = useState({
+    firstname: false,
+    lastname: false,
+    telnum: false,
+    email: false,
+  });
+
+  const handleBlur = (field) => (event) => {
+    setTouched({
+      ...touched,
+      [field]: true,
+    });
+  };
+
+  const validate = (firstname, lastname, telnum, email) => {
+    const errors = {
+      firstname: "",
+      lastname: "",
+      telnum: "",
+      email: "",
+    };
+
+    if (touched.firstname && firstname.length < 3) {
+      errors.firstname = "First Name should be >= 3 characters";
+    } else if (touched.firstname && firstname.length > 10) {
+      errors.firstname = "First Name should be <= 10 characters";
+    } else {
+      //Do nothing
+    }
+
+    if (touched.lastname && lastname.length < 3) {
+      errors.lastname = "Last Name should be >= 3 characters";
+    } else if (touched.lastname && lastname.length > 10) {
+      errors.lastname = "Last Name should be <= 10 characters";
+    } else {
+      //Do nothing
+    }
+
+    const reg = /^\d+$/;
+    if (touched.telnum && !reg.test(telnum)) {
+      errors.telnum = "Tel. Number should contain only numbers";
+    } else {
+      //Do nothing
+    }
+
+    if (
+      touched.email &&
+      email.split("").filter((x) => x === "@").length !== 1
+    ) {
+      errors.email = "Email should contain a @";
+    } else {
+      //Do nothing
+    }
+
+    return errors;
+  };
 
   return (
     <React.Fragment>
@@ -43,8 +100,18 @@ const FormContact = () => {
                 name="firstname"
                 placeholder="First Name"
                 value={firstName}
+                valid={
+                  validate(firstName, lastName, telnum, email).firstname === ""
+                }
+                invalid={
+                  validate(firstName, lastName, telnum, email).firstname !== ""
+                }
+                onBlur={handleBlur("firstname")}
                 onChange={(e) => setFirstName(e.target.value)}
               />
+              <FormFeedback>
+                {validate(firstName, lastName, telnum, email).firstname}
+              </FormFeedback>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -58,8 +125,18 @@ const FormContact = () => {
                 name="lastname"
                 placeholder="Last Name"
                 value={lastName}
+                valid={
+                  validate(firstName, lastName, telnum, email).lastname === ""
+                }
+                invalid={
+                  validate(firstName, lastName, telnum, email).lastname !== ""
+                }
+                onBlur={handleBlur("lastname")}
                 onChange={(e) => setLastName(e.target.value)}
               />
+              <FormFeedback>
+                {validate(firstName, lastName, telnum, email).lastname}
+              </FormFeedback>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -73,8 +150,18 @@ const FormContact = () => {
                 name="telnum"
                 placeholder="Tel. number"
                 value={telnum}
+                valid={
+                  validate(firstName, lastName, telnum, email).telnum === ""
+                }
+                invalid={
+                  validate(firstName, lastName, telnum, email).telnum !== ""
+                }
+                onBlur={handleBlur("telnum")}
                 onChange={(e) => setTelnum(e.target.value)}
               />
+              <FormFeedback>
+                {validate(firstName, lastName, telnum, email).telnum}
+              </FormFeedback>
             </Col>
           </FormGroup>
           <FormGroup row>
@@ -88,8 +175,18 @@ const FormContact = () => {
                 name="email"
                 placeholder="Email"
                 value={email}
+                valid={
+                  validate(firstName, lastName, telnum, email).email === ""
+                }
+                invalid={
+                  validate(firstName, lastName, telnum, email).email !== ""
+                }
+                onBlur={handleBlur("email")}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              <FormFeedback>
+                {validate(firstName, lastName, telnum, email).email}
+              </FormFeedback>
             </Col>
           </FormGroup>
           <FormGroup row>
