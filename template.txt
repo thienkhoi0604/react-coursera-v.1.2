@@ -1,0 +1,154 @@
+<Form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <FormGroup row>
+            <Label htmlFor="firstname" md={2}>
+              First Name
+            </Label>
+            <Col md={10}>
+              <Input
+                type="text"
+                id="firstname"
+                name="firstname"
+                placeholder="First Name"
+                value={firstName}
+                valid={
+                  validate(firstName, lastName, telnum, email).firstname === ""
+                }
+                invalid={
+                  validate(firstName, lastName, telnum, email).firstname !== ""
+                }
+                onBlur={handleBlur("firstname")}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <FormFeedback>
+                {validate(firstName, lastName, telnum, email).firstname}
+              </FormFeedback>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label htmlFor="lastname" md={2}>
+              Last Name
+            </Label>
+            <Col md={10}>
+              <Input
+                type="text"
+                id="lastname"
+                name="lastname"
+                placeholder="Last Name"
+                value={lastName}
+                valid={
+                  validate(firstName, lastName, telnum, email).lastname === ""
+                }
+                invalid={
+                  validate(firstName, lastName, telnum, email).lastname !== ""
+                }
+                onBlur={handleBlur("lastname")}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <FormFeedback>
+                {validate(firstName, lastName, telnum, email).lastname}
+              </FormFeedback>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label htmlFor="telnum" md={2}>
+              Contact Tel.
+            </Label>
+            <Col md={10}>
+              <Input
+                type="tel"
+                id="telnum"
+                name="telnum"
+                placeholder="Tel. number"
+                value={telnum}
+                valid={
+                  validate(firstName, lastName, telnum, email).telnum === ""
+                }
+                invalid={
+                  validate(firstName, lastName, telnum, email).telnum !== ""
+                }
+                onBlur={handleBlur("telnum")}
+                onChange={(e) => setTelnum(e.target.value)}
+              />
+              <FormFeedback>
+                {validate(firstName, lastName, telnum, email).telnum}
+              </FormFeedback>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label htmlFor="email" md={2}>
+              Email
+            </Label>
+            <Col md={10}>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={email}
+                valid={
+                  validate(firstName, lastName, telnum, email).email === ""
+                }
+                invalid={
+                  validate(firstName, lastName, telnum, email).email !== ""
+                }
+                onBlur={handleBlur("email")}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <FormFeedback>
+                {validate(firstName, lastName, telnum, email).email}
+              </FormFeedback>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col md={{ size: 6, offset: 2 }}>
+              <FormGroup check style={{ textAlign: "left" }}>
+                <Label check>
+                  <Input
+                    type="checkbox"
+                    name="agree"
+                    value={agree}
+                    onChange={(e) => setAgree(e.target.checked)}
+                  />
+                  <strong>May we contact you?</strong>
+                </Label>
+              </FormGroup>
+            </Col>
+            <Col md={{ size: 3, offset: 1 }} style={{ textAlign: "right" }}>
+              <Input
+                type="select"
+                name="contactType"
+                value={contactType}
+                onChange={(e) => setContactType(e.target.value)}
+              >
+                <option>Tel.</option>
+                <option>Email</option>
+              </Input>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Label htmlFor="message" md={2}>
+              Your Feedback
+            </Label>
+            <Col md={10}>
+              <Input
+                type="textarea"
+                id="message"
+                name="message"
+                rows="12"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              ></Input>
+            </Col>
+          </FormGroup>
+          <FormGroup row>
+            <Col md={{ size: 10, offset: 2 }} style={{ textAlign: "left" }}>
+              <Button type="submit" color="primary">
+                Send Feedback
+              </Button>
+            </Col>
+          </FormGroup>
+        </Form>

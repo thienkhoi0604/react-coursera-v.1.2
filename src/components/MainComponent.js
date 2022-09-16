@@ -1,10 +1,6 @@
 // import logo from "./logo.svg";
-import { useState } from "react";
 import { Routes, Route, Navigate, useParams } from "react-router-dom";
-import { DISHES } from "../shared/dishes";
-import { PROMOTIONS } from "../shared/promotions";
-import { COMMENTS } from "../shared/comments";
-import { LEADERS } from "../shared/leaders";
+import { useSelector } from "react-redux";
 import Menu from "./MenuComponent";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
@@ -13,20 +9,40 @@ import Contact from "./ContactComponent";
 import Dishdetail from "./DishdetailComponent";
 import About from "./AboutComponent";
 
-function Main() {
-  const [dishes, setDishes] = useState(DISHES);
-  const [promotions, setPromotions] = useState(PROMOTIONS);
-  const [comments, setComments] = useState(COMMENTS);
-  const [leaders, setLeaders] = useState(LEADERS);
+// const mapStateToProps = (state) => {
+//   return {
+//     dishes: state.dishes,
+//     comments: state.comments,
+//     promotions: state.promotions,
+//     leaders: state.leaders,
+//   };
+// };
+
+const Main = () => {
+  // const [dishes, setDishes] = useState(DISHES);
+  // const [promotions, setPromotions] = useState(PROMOTIONS);
+  // const [comments, setComments] = useState(COMMENTS);
+  // const [leaders, setLeaders] = useState(LEADERS);
+
+  const obj = useSelector((state) => {
+    return {
+      dishes: state.dishes,
+      comments: state.comments,
+      promotions: state.promotions,
+      leaders: state.leaders,
+    };
+  });
 
   const DishWithId = () => {
     const params = useParams();
     return (
       <Dishdetail
         dish={
-          dishes.filter((dish) => dish.id === parseInt(params.dishId, 10))[0]
+          obj.dishes.filter(
+            (dish) => dish.id === parseInt(params.dishId, 10)
+          )[0]
         }
-        comments={comments.filter(
+        comments={obj.comments.filter(
           (comment) => comment.dishId === parseInt(params.dishId, 10)
         )}
       />
@@ -41,24 +57,28 @@ function Main() {
           path="/home"
           element={
             <Home
-              dish={dishes.filter((dish) => dish.featured)[0]}
+              dish={obj.dishes.filter((dish) => dish.featured)[0]}
               promotion={
-                promotions.filter((promotion) => promotion.featured)[0]
+                obj.promotions.filter((promotion) => promotion.featured)[0]
               }
-              leader={leaders.filter((leader) => leader.featured)[0]}
+              leader={obj.leaders.filter((leader) => leader.featured)[0]}
             />
           }
         />
-        <Route exact path="/menu" element={<Menu dishes={dishes} />} />
+        <Route exact path="/menu" element={<Menu dishes={obj.dishes} />} />
         <Route path="/menu/:dishId" element={<DishWithId />} />
         <Route exact path="/contactus" element={<Contact />} />
-        <Route exact path="/aboutus" element={<About leaders={leaders} />} />
+        <Route
+          exact
+          path="/aboutus"
+          element={<About leaders={obj.leaders} />}
+        />
         <Route path="*" element={<Navigate to="/home" replace />} />
         {/* <Route path='*' element={<NotFound />} /> */}
       </Routes>
       <Footer />
     </div>
   );
-}
+};
 
 export default Main;

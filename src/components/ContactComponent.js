@@ -1,75 +1,64 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+// import React, { useState } from "react";
+import React from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  Form,
-  Button,
-  FormGroup,
-  Label,
-  Col,
-  Input,
-  FormFeedback,
+  // Form,
+  // Button,
+  // FormGroup,
+  // Label,
+  // Col,
+  // Input,
+  // FormFeedback,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
 
 const FormContact = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [telnum, setTelnum] = useState("");
-  const [email, setEmail] = useState("");
-  const [agree, setAgree] = useState(false);
-  const [contactType, setContactType] = useState("Tel.");
-  const [message, setMessage] = useState("");
-  const [touched, setTouched] = useState({
-    firstname: false,
-    lastname: false,
-    telnum: false,
-    email: false,
-  });
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
+  // const [telnum, setTelnum] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [agree, setAgree] = useState(false);
+  // const [contactType, setContactType] = useState("Tel.");
+  // const [message, setMessage] = useState("");
+  // const [touched, setTouched] = useState({
+  //   firstname: false,
+  //   lastname: false,
+  //   telnum: false,
+  //   email: false,
+  // });
 
-  const handleBlur = (field) => (event) => {
-    setTouched({
-      ...touched,
-      [field]: true,
-    });
-  };
+  //useFormik
 
-  const validate = (firstname, lastname, telnum, email) => {
-    const errors = {
-      firstname: "",
-      lastname: "",
-      telnum: "",
-      email: "",
-    };
+  const validate = (values) => {
+    const errors = {};
 
-    if (touched.firstname && firstname.length < 3) {
-      errors.firstname = "First Name should be >= 3 characters";
-    } else if (touched.firstname && firstname.length > 10) {
-      errors.firstname = "First Name should be <= 10 characters";
+    if (values.firstName.length < 3) {
+      errors.firstName = "First Name should be >= 3 characters";
+    } else if (values.firstName.length > 10) {
+      errors.firstName = "First Name should be <= 10 characters";
     } else {
       //Do nothing
     }
 
-    if (touched.lastname && lastname.length < 3) {
-      errors.lastname = "Last Name should be >= 3 characters";
-    } else if (touched.lastname && lastname.length > 10) {
-      errors.lastname = "Last Name should be <= 10 characters";
+    if (values.lastName.length < 3) {
+      errors.lastName = "Last Name should be >= 3 characters";
+    } else if (values.lastName.length > 10) {
+      errors.lastName = "Last Name should be <= 10 characters";
     } else {
       //Do nothing
     }
 
     const reg = /^\d+$/;
-    if (touched.telnum && !reg.test(telnum)) {
+    if (!reg.test(values.telnum)) {
       errors.telnum = "Tel. Number should contain only numbers";
     } else {
       //Do nothing
     }
 
-    if (
-      touched.email &&
-      email.split("").filter((x) => x === "@").length !== 1
-    ) {
+    if (values.email.split("").filter((x) => x === "@").length !== 1) {
       errors.email = "Email should contain a @";
     } else {
       //Do nothing
@@ -78,166 +67,159 @@ const FormContact = () => {
     return errors;
   };
 
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      telnum: "",
+      email: "",
+      agree: false,
+      contactType: "Tel.",
+      message: "",
+    },
+    validate,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
+  // const handleBlur = (field) => (event) => {
+  //   setTouched({
+  //     ...touched,
+  //     [field]: true,
+  //   });
+  // };
+
   return (
     <React.Fragment>
       <div className="col-12">
         <h3>Send us your feedback</h3>
       </div>
       <div className="col-12 col-md-9">
-        <Form
-          onSubmit={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <FormGroup row>
-            <Label htmlFor="firstname" md={2}>
+        <form onSubmit={formik.handleSubmit}>
+          <div className="form-group row">
+            <label className="col-md-2 col-form-label" htmlFor="firstName">
               First Name
-            </Label>
-            <Col md={10}>
-              <Input
+            </label>
+            <div className="col-12 col-md-10">
+              <input
+                className="form-control"
+                id="firstName"
+                name="firstName"
                 type="text"
-                id="firstname"
-                name="firstname"
                 placeholder="First Name"
-                value={firstName}
-                valid={
-                  validate(firstName, lastName, telnum, email).firstname === ""
-                }
-                invalid={
-                  validate(firstName, lastName, telnum, email).firstname !== ""
-                }
-                onBlur={handleBlur("firstname")}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.firstName}
               />
-              <FormFeedback>
-                {validate(firstName, lastName, telnum, email).firstname}
-              </FormFeedback>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label htmlFor="lastname" md={2}>
+            </div>
+            {formik.errors.firstName ? (
+              <div>{formik.errors.firstName}</div>
+            ) : null}
+          </div>
+          <div className="form-group row">
+            <label className="col-md-2 col-form-label" htmlFor="lastName">
               Last Name
-            </Label>
-            <Col md={10}>
-              <Input
+            </label>
+            <div className="col-12 col-md-10">
+              <input
+                className="form-control"
+                id="lastName"
+                name="lastName"
                 type="text"
-                id="lastname"
-                name="lastname"
                 placeholder="Last Name"
-                value={lastName}
-                valid={
-                  validate(firstName, lastName, telnum, email).lastname === ""
-                }
-                invalid={
-                  validate(firstName, lastName, telnum, email).lastname !== ""
-                }
-                onBlur={handleBlur("lastname")}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={formik.handleChange}
+                value={formik.values.lastName}
               />
-              <FormFeedback>
-                {validate(firstName, lastName, telnum, email).lastname}
-              </FormFeedback>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label htmlFor="telnum" md={2}>
+            </div>
+            {formik.errors.firstName ? (
+              <div>{formik.errors.firstName}</div>
+            ) : null}
+          </div>
+          <div className="form-group row">
+            <label className="col-md-2 col-form-label" htmlFor="telnum">
               Contact Tel.
-            </Label>
-            <Col md={10}>
-              <Input
-                type="tel"
+            </label>
+            <div className="col-12 col-md-10">
+              <input
+                className="form-control"
                 id="telnum"
                 name="telnum"
-                placeholder="Tel. number"
-                value={telnum}
-                valid={
-                  validate(firstName, lastName, telnum, email).telnum === ""
-                }
-                invalid={
-                  validate(firstName, lastName, telnum, email).telnum !== ""
-                }
-                onBlur={handleBlur("telnum")}
-                onChange={(e) => setTelnum(e.target.value)}
+                type="tel"
+                placeholder="Tel. Num"
+                onChange={formik.handleChange}
+                value={formik.values.telnum}
               />
-              <FormFeedback>
-                {validate(firstName, lastName, telnum, email).telnum}
-              </FormFeedback>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label htmlFor="email" md={2}>
+            </div>
+          </div>
+          <div className="form-group row">
+            <label className="col-md-2 col-form-label" htmlFor="email">
               Email
-            </Label>
-            <Col md={10}>
-              <Input
-                type="email"
+            </label>
+            <div className="col-10 col-md-10">
+              <input
+                className="form-control"
                 id="email"
                 name="email"
+                type="email"
                 placeholder="Email"
-                value={email}
-                valid={
-                  validate(firstName, lastName, telnum, email).email === ""
-                }
-                invalid={
-                  validate(firstName, lastName, telnum, email).email !== ""
-                }
-                onBlur={handleBlur("email")}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={formik.handleChange}
+                value={formik.values.email}
               />
-              <FormFeedback>
-                {validate(firstName, lastName, telnum, email).email}
-              </FormFeedback>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Col md={{ size: 6, offset: 2 }}>
-              <FormGroup check style={{ textAlign: "left" }}>
-                <Label check>
-                  <Input
-                    type="checkbox"
-                    name="agree"
-                    value={agree}
-                    onChange={(e) => setAgree(e.target.checked)}
-                  />
+            </div>
+          </div>
+          <div className="form-group row">
+            <div className="col-md-6 offset-md-2">
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  name="agree"
+                  id="agree"
+                  value={formik.values.agree}
+                  onChange={formik.handleChange}
+                />
+                <label className="form-check-label" htmlFor="agree">
                   <strong>May we contact you?</strong>
-                </Label>
-              </FormGroup>
-            </Col>
-            <Col md={{ size: 3, offset: 1 }} style={{ textAlign: "right" }}>
-              <Input
-                type="select"
+                </label>
+              </div>
+            </div>
+            <div className="col-md-3 offset-md-1">
+              <select
+                className="form-control"
+                id="contactType"
                 name="contactType"
-                value={contactType}
-                onChange={(e) => setContactType(e.target.value)}
+                value={formik.values.contactType}
+                onChange={formik.handleChange}
               >
                 <option>Tel.</option>
                 <option>Email</option>
-              </Input>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label htmlFor="message" md={2}>
+              </select>
+            </div>
+          </div>
+          <div className="form-group row">
+            <label className="col-md-2 col-form-label" htmlFor="message">
               Your Feedback
-            </Label>
-            <Col md={10}>
-              <Input
-                type="textarea"
+            </label>
+            <div className="col-md-10">
+              <textarea
+                className="form-control"
                 id="message"
                 name="message"
                 rows="12"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              ></Input>
-            </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Col md={{ size: 10, offset: 2 }} style={{ textAlign: "left" }}>
-              <Button type="submit" color="primary">
+                value={formik.values.message}
+                onChange={formik.handleChange}
+              ></textarea>
+            </div>
+          </div>
+          <div className="form-group row">
+            <div className="offset-md-2 col-md-10">
+              <button type="submit" className="btn btn-primary">
                 Send Feedback
-              </Button>
-            </Col>
-          </FormGroup>
-        </Form>
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </React.Fragment>
   );

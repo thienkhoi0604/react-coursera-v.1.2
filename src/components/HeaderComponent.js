@@ -6,14 +6,40 @@ import {
   NavbarBrand,
   NavbarToggler,
   Collapse,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  FormGroup,
+  Input,
+  Label,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 
 const Header = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
   const toggleNav = () => {
     setIsNavOpen((prevState) => !prevState);
   };
+
+  const handleLogin = (event) => {
+    setIsModalOpen(!isModalOpen);
+    alert(
+      "Username: " +
+        username +
+        " Password: " +
+        password +
+        " Remember: " +
+        remember
+    );
+    event.preventDefault();
+  };
+
   return (
     <React.Fragment>
       <Navbar dark expand="md">
@@ -51,6 +77,17 @@ const Header = () => {
                 </NavLink>
               </NavItem>
             </Nav>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <Button
+                  outline
+                  color="primary"
+                  onClick={() => setIsModalOpen(!isModalOpen)}
+                >
+                  <span className="fa fa-sign-in fa-lg"></span> Login
+                </Button>
+              </NavItem>
+            </Nav>
           </Collapse>
         </div>
       </Navbar>
@@ -68,6 +105,49 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <Modal isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
+        <ModalHeader toggle={() => setIsModalOpen(!isModalOpen)}>
+          Login
+        </ModalHeader>
+        <ModalBody>
+          <Form onSubmit={handleLogin}>
+            <FormGroup>
+              <Label htmlFor="username">Username</Label>
+              <Input
+                type="text"
+                id="username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input
+                  type="checkbox"
+                  name="remember"
+                  value={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                />
+                Remember me
+              </Label>
+            </FormGroup>
+            <Button type="submit" value="submit" color="primary">
+              Login
+            </Button>
+          </Form>
+        </ModalBody>
+      </Modal>
     </React.Fragment>
   );
 };
