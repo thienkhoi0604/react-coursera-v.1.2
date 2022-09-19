@@ -1,6 +1,8 @@
 // import logo from "./logo.svg";
 import { Routes, Route, Navigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { addComment, fetchDishes } from "../redux/ActionCreators";
 import Menu from "./MenuComponent";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
@@ -33,12 +35,17 @@ const Main = () => {
     };
   });
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchDishes());
+  }, [dispatch]);
+
   const DishWithId = () => {
     const params = useParams();
     return (
       <Dishdetail
         dish={
-          obj.dishes.filter(
+          obj.dishes.dishes.filter(
             (dish) => dish.id === parseInt(params.dishId, 10)
           )[0]
         }
@@ -57,15 +64,27 @@ const Main = () => {
           path="/home"
           element={
             <Home
-              dish={obj.dishes.filter((dish) => dish.featured)[0]}
+              dish={obj.dishes.dishes.filter((dish) => dish.featured)[0]}
               promotion={
                 obj.promotions.filter((promotion) => promotion.featured)[0]
               }
               leader={obj.leaders.filter((leader) => leader.featured)[0]}
+              dishesLoading={obj.dishes.isLoading}
+              dishesErrMess={obj.dishes.errMess}
             />
           }
         />
-        <Route exact path="/menu" element={<Menu dishes={obj.dishes} />} />
+        <Route
+          exact
+          path="/menu"
+          element={
+            <Menu
+              dishes={obj.dishes.dishes}
+              dishesLoading={obj.dishes.isLoading}
+              dishesErrMess={obj.dishes.errMess}
+            />
+          }
+        />
         <Route path="/menu/:dishId" element={<DishWithId />} />
         <Route exact path="/contactus" element={<Contact />} />
         <Route
