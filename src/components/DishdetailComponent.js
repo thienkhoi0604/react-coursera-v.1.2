@@ -62,7 +62,7 @@ const CommentForm = () => {
           <form onSubmit={formik.handleSubmit}>
             <div className="form-group">
               <label
-                style={{ "padding-left": 0 }}
+                style={{ paddingLeft: 0 }}
                 className="col-12"
                 htmlFor="rating"
               >
@@ -85,7 +85,7 @@ const CommentForm = () => {
             </div>
             <div className="form-group">
               <label
-                style={{ "padding-left": 0 }}
+                style={{ paddingLeft: 0 }}
                 className="col-12 col-form-label"
                 htmlFor="yourName"
               >
@@ -109,7 +109,7 @@ const CommentForm = () => {
             </div>
             <div className="form-group">
               <label
-                style={{ "padding-left": 0 }}
+                style={{ paddingLeft: 0 }}
                 className="col-12 col-form-label"
                 htmlFor="comment"
               >
