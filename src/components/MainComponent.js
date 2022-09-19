@@ -2,7 +2,7 @@
 import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { addComment, fetchDishes } from "../redux/ActionCreators";
+import { fetchDishes } from "../redux/ActionCreators";
 import Menu from "./MenuComponent";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
@@ -36,6 +36,7 @@ const Main = () => {
   });
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchDishes());
   }, [dispatch]);

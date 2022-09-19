@@ -14,9 +14,13 @@ import {
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { addComment } from "../redux/ActionCreators";
 
-const CommentForm = () => {
+const CommentForm = ({ dishId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const validate = (values) => {
     const errors = {};
@@ -41,7 +45,10 @@ const CommentForm = () => {
     },
     validate,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      dispatch(
+        addComment(dishId, values.rating, values.yourName, values.comment)
+      );
+      console.log("submit");
     },
   });
 
@@ -192,7 +199,7 @@ const Dishdetail = ({ dish, comments }) => {
               </div>
             );
           })}
-          <CommentForm />
+          <CommentForm dishId={dish.id} />
         </div>
       </div>
     </div>
