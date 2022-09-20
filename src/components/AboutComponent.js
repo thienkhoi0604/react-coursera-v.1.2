@@ -9,11 +9,16 @@ import {
   Media,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { baseUrl } from "../shared/baseUrl";
 
 const RenderLeader = ({ leader }) => {
   return (
     <Media className="my-4" style={{ textAlign: "left" }}>
-      <img className="mr-3" src={leader.image} alt={leader.name}></img>
+      <img
+        className="mr-3"
+        src={baseUrl + leader.image}
+        alt={leader.name}
+      ></img>
       <Media body left>
         <h3 className="mt-0 mb-1">{leader.name}</h3>
         {leader.designation && (

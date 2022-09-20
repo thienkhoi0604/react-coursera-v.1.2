@@ -39,6 +39,8 @@ const Home = ({
   promoLoading,
   promoErrMess,
   leader,
+  leaderLoading,
+  leaderErrMess,
 }) => {
   return (
     <div className="container">
@@ -58,7 +60,11 @@ const Home = ({
           />
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={leader} />
+          <RenderCard
+            item={leader}
+            isLoading={leaderLoading}
+            errMess={leaderErrMess}
+          />
         </div>
       </div>
     </div>

@@ -1,37 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-// import React, { useState } from "react";
 import React from "react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  // Form,
-  // Button,
-  // FormGroup,
-  // Label,
-  // Col,
-  // Input,
-  // FormFeedback,
-} from "reactstrap";
+import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { postFeedback } from "../redux/ActionCreators";
 
 const FormContact = () => {
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [telnum, setTelnum] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [agree, setAgree] = useState(false);
-  // const [contactType, setContactType] = useState("Tel.");
-  // const [message, setMessage] = useState("");
-  // const [touched, setTouched] = useState({
-  //   firstname: false,
-  //   lastname: false,
-  //   telnum: false,
-  //   email: false,
-  // });
+  const dispatch = useDispatch();
 
   //useFormik
-
   const validate = (values) => {
     const errors = {};
 
@@ -90,16 +68,20 @@ const FormContact = () => {
     validate,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      dispatch(
+        postFeedback(
+          values.firstName,
+          values.lastName,
+          values.telnum,
+          values.email,
+          values.agree,
+          values.contactType,
+          values.message
+        )
+      );
       formik.resetForm();
     },
   });
-
-  // const handleBlur = (field) => (event) => {
-  //   setTouched({
-  //     ...touched,
-  //     [field]: true,
-  //   });
-  // };
 
   return (
     <React.Fragment>

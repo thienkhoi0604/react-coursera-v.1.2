@@ -2,10 +2,12 @@
 import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import {
   fetchDishes,
   fetchComments,
   fetchPromos,
+  fetchLeaders,
 } from "../redux/ActionCreators";
 import Menu from "./MenuComponent";
 import Header from "./HeaderComponent";
@@ -15,21 +17,7 @@ import Contact from "./ContactComponent";
 import Dishdetail from "./DishdetailComponent";
 import About from "./AboutComponent";
 
-// const mapStateToProps = (state) => {
-//   return {
-//     dishes: state.dishes,
-//     comments: state.comments,
-//     promotions: state.promotions,
-//     leaders: state.leaders,
-//   };
-// };
-
 const Main = () => {
-  // const [dishes, setDishes] = useState(DISHES);
-  // const [promotions, setPromotions] = useState(PROMOTIONS);
-  // const [comments, setComments] = useState(COMMENTS);
-  // const [leaders, setLeaders] = useState(LEADERS);
-
   const obj = useSelector((state) => {
     return {
       dishes: state.dishes,
@@ -45,6 +33,7 @@ const Main = () => {
     dispatch(fetchDishes());
     dispatch(fetchComments());
     dispatch(fetchPromos());
+    dispatch(fetchLeaders());
   }, [dispatch]);
 
   const DishWithId = () => {
@@ -69,44 +58,54 @@ const Main = () => {
   return (
     <div>
       <Header />
-      <Routes>
-        <Route
-          path="/home"
-          element={
-            <Home
-              dish={obj.dishes.dishes.filter((dish) => dish.featured)[0]}
-              dishesLoading={obj.dishes.isLoading}
-              dishesErrMess={obj.dishes.errMess}
-              promotion={
-                obj.promotions.promotions.filter((promo) => promo.featured)[0]
+      <TransitionGroup>
+        <CSSTransition classNames="page" timeout={300}>
+          <Routes>
+            <Route
+              path="/home"
+              element={
+                <Home
+                  dish={obj.dishes.dishes.filter((dish) => dish.featured)[0]}
+                  dishesLoading={obj.dishes.isLoading}
+                  dishesErrMess={obj.dishes.errMess}
+                  promotion={
+                    obj.promotions.promotions.filter(
+                      (promo) => promo.featured
+                    )[0]
+                  }
+                  promoLoading={obj.promotions.isLoading}
+                  promoErrMess={obj.promotions.errMess}
+                  leader={
+                    obj.leaders.leaders.filter((leader) => leader.featured)[0]
+                  }
+                  leaderLoading={obj.leaders.isLoading}
+                  leaderErrMess={obj.leaders.errMess}
+                />
               }
-              promoLoading={obj.promotions.isLoading}
-              promoErrMess={obj.promotions.errMess}
-              leader={obj.leaders.filter((leader) => leader.featured)[0]}
             />
-          }
-        />
-        <Route
-          exact
-          path="/menu"
-          element={
-            <Menu
-              dishes={obj.dishes.dishes}
-              dishesLoading={obj.dishes.isLoading}
-              dishesErrMess={obj.dishes.errMess}
+            <Route
+              exact
+              path="/menu"
+              element={
+                <Menu
+                  dishes={obj.dishes.dishes}
+                  dishesLoading={obj.dishes.isLoading}
+                  dishesErrMess={obj.dishes.errMess}
+                />
+              }
             />
-          }
-        />
-        <Route path="/menu/:dishId" element={<DishWithId />} />
-        <Route exact path="/contactus" element={<Contact />} />
-        <Route
-          exact
-          path="/aboutus"
-          element={<About leaders={obj.leaders} />}
-        />
-        <Route path="*" element={<Navigate to="/home" replace />} />
-        {/* <Route path='*' element={<NotFound />} /> */}
-      </Routes>
+            <Route path="/menu/:dishId" element={<DishWithId />} />
+            <Route exact path="/contactus" element={<Contact />} />
+            <Route
+              exact
+              path="/aboutus"
+              element={<About leaders={obj.leaders.leaders} />}
+            />
+            <Route path="*" element={<Navigate to="/home" replace />} />
+            {/* <Route path='*' element={<NotFound />} /> */}
+          </Routes>
+        </CSSTransition>
+      </TransitionGroup>
       <Footer />
     </div>
   );
