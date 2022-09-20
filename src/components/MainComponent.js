@@ -2,7 +2,11 @@
 import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchDishes } from "../redux/ActionCreators";
+import {
+  fetchDishes,
+  fetchComments,
+  fetchPromos,
+} from "../redux/ActionCreators";
 import Menu from "./MenuComponent";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
@@ -39,6 +43,8 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(fetchDishes());
+    dispatch(fetchComments());
+    dispatch(fetchPromos());
   }, [dispatch]);
 
   const DishWithId = () => {
@@ -50,9 +56,12 @@ const Main = () => {
             (dish) => dish.id === parseInt(params.dishId, 10)
           )[0]
         }
-        comments={obj.comments.filter(
+        isLoading={obj.dishes.isLoading}
+        errMess={obj.dishes.errMess}
+        comments={obj.comments.comments.filter(
           (comment) => comment.dishId === parseInt(params.dishId, 10)
         )}
+        commentsErrMess={obj.comments.errMess}
       />
     );
   };
@@ -66,12 +75,14 @@ const Main = () => {
           element={
             <Home
               dish={obj.dishes.dishes.filter((dish) => dish.featured)[0]}
-              promotion={
-                obj.promotions.filter((promotion) => promotion.featured)[0]
-              }
-              leader={obj.leaders.filter((leader) => leader.featured)[0]}
               dishesLoading={obj.dishes.isLoading}
               dishesErrMess={obj.dishes.errMess}
+              promotion={
+                obj.promotions.promotions.filter((promo) => promo.featured)[0]
+              }
+              promoLoading={obj.promotions.isLoading}
+              promoErrMess={obj.promotions.errMess}
+              leader={obj.leaders.filter((leader) => leader.featured)[0]}
             />
           }
         />

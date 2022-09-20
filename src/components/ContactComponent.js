@@ -35,7 +35,9 @@ const FormContact = () => {
   const validate = (values) => {
     const errors = {};
 
-    if (values.firstName.length < 3) {
+    if (!values.firstName) {
+      errors.firstName = "Required";
+    } else if (values.firstName.length < 3) {
       errors.firstName = "First Name should be >= 3 characters";
     } else if (values.firstName.length > 10) {
       errors.firstName = "First Name should be <= 10 characters";
@@ -43,7 +45,9 @@ const FormContact = () => {
       //Do nothing
     }
 
-    if (values.lastName.length < 3) {
+    if (!values.lastName) {
+      errors.lastName = "Required";
+    } else if (values.lastName.length < 3) {
       errors.lastName = "Last Name should be >= 3 characters";
     } else if (values.lastName.length > 10) {
       errors.lastName = "Last Name should be <= 10 characters";
@@ -52,14 +56,20 @@ const FormContact = () => {
     }
 
     const reg = /^\d+$/;
-    if (!reg.test(values.telnum)) {
+    if (!values.telnum) {
+      errors.telnum = "Required";
+    } else if (!reg.test(values.telnum)) {
       errors.telnum = "Tel. Number should contain only numbers";
     } else {
       //Do nothing
     }
 
-    if (values.email.split("").filter((x) => x === "@").length !== 1) {
-      errors.email = "Email should contain a @";
+    if (!values.email) {
+      errors.email = "Required";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+    ) {
+      errors.email = "Invalid email address";
     } else {
       //Do nothing
     }
@@ -80,6 +90,7 @@ const FormContact = () => {
     validate,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      formik.resetForm();
     },
   });
 
@@ -112,10 +123,10 @@ const FormContact = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.firstName}
               />
+              {formik.errors.firstName ? (
+                <div>{formik.errors.firstName}</div>
+              ) : null}
             </div>
-            {formik.errors.firstName ? (
-              <div>{formik.errors.firstName}</div>
-            ) : null}
           </div>
           <div className="form-group row">
             <label className="col-md-2 col-form-label" htmlFor="lastName">
@@ -129,12 +140,13 @@ const FormContact = () => {
                 type="text"
                 placeholder="Last Name"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.lastName}
               />
+              {formik.errors.lastName ? (
+                <div>{formik.errors.lastName}</div>
+              ) : null}
             </div>
-            {formik.errors.firstName ? (
-              <div>{formik.errors.firstName}</div>
-            ) : null}
           </div>
           <div className="form-group row">
             <label className="col-md-2 col-form-label" htmlFor="telnum">
@@ -148,8 +160,10 @@ const FormContact = () => {
                 type="tel"
                 placeholder="Tel. Num"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.telnum}
               />
+              {formik.errors.telnum ? <div>{formik.errors.telnum}</div> : null}
             </div>
           </div>
           <div className="form-group row">
@@ -164,8 +178,10 @@ const FormContact = () => {
                 type="email"
                 placeholder="Email"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.email}
               />
+              {formik.errors.email ? <div>{formik.errors.email}</div> : null}
             </div>
           </div>
           <div className="form-group row">

@@ -15,7 +15,8 @@ import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { addComment } from "../redux/ActionCreators";
+import { postComment } from "../redux/ActionCreators";
+import { baseUrl } from "../shared/baseUrl";
 
 const CommentForm = ({ dishId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,9 +47,8 @@ const CommentForm = ({ dishId }) => {
     validate,
     onSubmit: (values) => {
       dispatch(
-        addComment(dishId, values.rating, values.yourName, values.comment)
+        postComment(dishId, values.rating, values.yourName, values.comment)
       );
-      console.log("submit");
     },
   });
 
@@ -165,7 +165,13 @@ const CommentDishdetail = ({ comment }) => {
   );
 };
 
-const Dishdetail = ({ dish, comments }) => {
+const Dishdetail = ({
+  dish,
+  isLoading,
+  errMess,
+  comments,
+  commentsErrMess,
+}) => {
   return dish ? (
     <div className="container">
       <div className="row" style={{ textAlign: "left" }}>
@@ -183,7 +189,7 @@ const Dishdetail = ({ dish, comments }) => {
       <div className="row">
         <div className="col-12 col-md-5 m-1">
           <Card>
-            <CardImg top src={dish.image} alt={dish.name} />
+            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
             <CardBody>
               <CardTitle>{dish.name}</CardTitle>
               <CardText>{dish.description}</CardText>
